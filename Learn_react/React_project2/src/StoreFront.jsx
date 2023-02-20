@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import AddProductForm from "./AddProductForm.jsx";
 import ProductsList from "./ProductsList.jsx";
 export default function StoreFront() {
@@ -9,13 +9,22 @@ export default function StoreFront() {
 
     function handleFormSubmit(event) {
         event.preventDefault();
+        fetch("https://api.learnjavascript.online/demo/react/admin/products", {
+            method: "POST",
+            headers: {
+                "Content-Type": "applications/json",
+            },
+            body: JSON.stringify({ name: name, description: description })
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
         if (!name) {
             setValidation("Please enter a name");
-            return ;
+            return;
         }
-        if (!description){
+        if (!description) {
             setValidation("Please enter a description");
-            return ;
+            return;
         }
         setProducts([...products, {
             id: products.length + 1,
