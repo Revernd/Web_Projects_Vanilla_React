@@ -1,27 +1,20 @@
-import { useEffect, useState } from "react";
-import Product from "./Product.jsx";
+import { useState, useEffect } from "react";
+import Product from "./Product";
 import Loader from "./Loader";
+import useFetch from "./useFetch";
 
 export default function StoreFront() {
     const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-
+    const { get, loading } = useFetch("https://react-tutorial-demo.firebaseio.com/");
     useEffect(() => {
-        fetch("https://react-tutorial-demo.firebaseio.com/products.json")
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setProducts(data);
-            })
-            .catch(error => console.log(error))
-            .finally(() => {
-                setIsLoading(false);
-                console.log("loading done")
-            })
-    }, []);
+        get("products.json")
+            .then(data => setProducts(data))
+            .catch(e => console.error(e));
+    }
+        , [])
 
     return <div className="store-front">
-        {isLoading && <Loader />}
+        {loading && <Loader />}
         {products.map(product => <Product key={product.id} details={product} />)}
     </div>;
 }

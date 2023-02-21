@@ -1,23 +1,17 @@
 import { useState } from "react";
 import AddProductForm from "./AddProductForm.jsx";
 import ProductsList from "./ProductsList.jsx";
+import useFetch from "./useFetch";
+
 export default function StoreFront() {
     const [products, setProducts] = useState([]);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [validation, setValidation] = useState("");
+    const { post } = useFetch("https://api.learnjavascript.online/demo/react/admin/");
 
     function handleFormSubmit(event) {
         event.preventDefault();
-        fetch("https://api.learnjavascript.online/demo/react/admin/products", {
-            method: "POST",
-            headers: {
-                "Content-Type": "applications/json",
-            },
-            body: JSON.stringify({ name: name, description: description })
-        })
-            .then(response => response.json())
-            .then(data => console.log(data));
         if (!name) {
             setValidation("Please enter a name");
             return;
@@ -26,6 +20,9 @@ export default function StoreFront() {
             setValidation("Please enter a description");
             return;
         }
+        post("products", { name: name, description: description })
+            .then(data => console.log(data))
+            .catch(e => console.error(e));
         setProducts([...products, {
             id: products.length + 1,
             name: name,
