@@ -17,7 +17,7 @@ export default function Product(props) {
 
     console.log(details);
 
-    return <Link to={'/products/' + details.id}>
+    return <Link to={`${details.id}`}>
         <div className="product">
             <img src={details.image} width="50" alt={details.name} />
             <div className="product-info">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Outlet } from "react-router-dom";
 import useFetch from "./useFetch";
 export default function ProductDetails() {
     const [product, setProduct] = useState({});
@@ -20,6 +20,8 @@ export default function ProductDetails() {
             <p>{product.description}</p>
             <h3>${product.price}</h3>
             <img src={product.image} width="100" />
+            <p>View <Link to={"/products/" + params.id + "/delivery"}>delivery notes</Link></p>
         </div>}
+        <Outlet />
     </div>
 }
